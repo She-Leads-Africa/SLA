@@ -77,7 +77,7 @@ export default function SettingsPage() {
     setTimeout(() => {
       toast({
         title: "Cache cleared",
-        description: "Application cache has been cleared successfully",
+        description: "Application cache has been cleared  successfully",
       })
       setIsLoading(false)
     }, 1000)
