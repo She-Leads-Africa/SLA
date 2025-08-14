@@ -313,7 +313,7 @@ export async function POST(request: Request) {
     const applicationInsertData = {
       applicant_id: applicantData.id,
       course_id: courseId,
-      pathway: formData.pathway === "entrepreneurial" ? "entrepreneurial" : "professional",
+      pathway: formData.pathway === "entrepreneurship" ? "entrepreneurship" : "professional",
       has_business: formData.businessStatus !== "no_business" && formData.businessStatus !== "",
       business_age: sanitizeBusinessAge(formData.businessStatus || "no_business"),
       business_sector: formData.businessSector || null,
