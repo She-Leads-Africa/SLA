@@ -1,3 +1,4 @@
+// middleware.ts
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
@@ -15,7 +16,13 @@ export function middleware(request: NextRequest) {
     if (!authCookie || authCookie.value !== "authenticated") {
       // Redirect to login page
       const loginUrl = new URL("/admin/login", request.url)
-      return NextResponse.redirect(loginUrl)
+      
+      // Create response and add CORS headers for iframe
+      const response = NextResponse.redirect(loginUrl)
+      response.headers.set('Access-Control-Allow-Origin', 'https://sheleadsafrica.org')
+      response.headers.set('Access-Control-Allow-Credentials', 'true')
+      
+      return response
     }
   }
 

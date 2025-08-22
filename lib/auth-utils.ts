@@ -1,22 +1,28 @@
-export function setAuthCookie(value: string) {
+export function setAuthCookie(value: string): boolean {
   const isProduction = process.env.NODE_ENV === "production"
   const isHttps = typeof window !== "undefined" && window.location.protocol === "https:"
 
+  // For cross-origin iframe contexts, we need SameSite=None and Secure
   const cookieOptions = [
     `admin-auth=${value}`,
     "Path=/",
     "Max-Age=86400", // 24 hours
-    "SameSite=Lax",
-    ...(isProduction && isHttps ? ["Secure"] : []),
+    "SameSite=None", // Required for cross-site cookies
+    "Secure", // Required when using SameSite=None
   ].join("; ")
 
-  document.cookie = cookieOptions
+  try {
+    document.cookie = cookieOptions
 
-  // Verify cookie was set
-  const verification = getAuthCookie()
-  console.log("Cookie set verification:", verification === value ? "SUCCESS" : "FAILED")
-
-  return verification === value
+    // Verify cookie was set
+    const verification = getAuthCookie()
+    console.log("Cookie set verification:", verification === value ? "SUCCESS" : "FAILED")
+    
+    return verification === value
+  } catch (error) {
+    console.error("Error setting cookie:", error)
+    return false
+  }
 }
 
 export function getAuthCookie(): string | null {
