@@ -9,6 +9,25 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-}
 
-export default nextConfig
+  async headers() {
+    return [
+      {
+        source: "/(.*)", // apply to all routes
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "ALLOW-FROM https://sheleadsafrica.org/", // optional legacy
+          },
+          {
+            key: "Content-Security-Policy",
+            value:
+              "frame-ancestors 'self' https://sheleadsafrica.org/ https://sheleadsafrica.org/;",
+          },
+        ],
+      },
+    ];
+  },
+};
+
+export default nextConfig;

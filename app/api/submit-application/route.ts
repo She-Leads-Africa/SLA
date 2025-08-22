@@ -366,11 +366,11 @@ try {
       ? "Entrepreneurship Applicants" 
       : "Professional Applicants";
     
-    const pathwayFolder = await createFolder(DRIVE_FOLDER_ID, pathwayFolderName);
+    //const pathwayFolder = await createFolder(DRIVE_FOLDER_ID, pathwayFolderName);
 
     // Create applicant folder
     const applicantFolderName = `${formData.fullName || "Applicant"} - ${new Date().toISOString().split('T')[0]}`;
-    const applicantFolder = await createFolder(pathwayFolder.id!, applicantFolderName);
+    const applicantFolder = await createFolder(DRIVE_FOLDER_ID, applicantFolderName);
 
 
     // Update applicant record with drive info
