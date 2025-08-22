@@ -5,7 +5,68 @@ import { generateCourseConfirmationEmail } from "@/lib/email-templates"
 import { google } from 'googleapis'
 import { Readable } from 'stream'
 
-//==============Dive set up=================================
+
+//=====================Google Sheet==================
+
+// Function to upload form data to Google Sheets
+async function uploadToGoogleSheets(formData: any, applicantId: string, applicationId: string, courseDetails: any) {
+  try {
+    const spreadsheetId = process.env.GOOGLE_SHEET_ID
+    if (!spreadsheetId) {
+      console.error('Google Sheet ID not configured')
+      return
+    }
+
+    // Prepare the data for the sheet
+    const rowData = [
+      new Date().toISOString(), // Timestamp
+      applicantId,
+      applicationId,
+      formData.fullName,
+      formData.email,
+      formData.phoneNumber || 'N/A',
+      formData.dateOfBirth || 'N/A',
+      formData.location || 'N/A',
+      formData.locationType || 'N/A',
+      formData.academicQualification || 'N/A',
+      formData.studentLevel || 'N/A',
+      formData.employmentStatus || 'N/A',
+      formData.isDisplaced ? 'Yes' : 'No',
+      formData.hasDisability ? 'Yes' : 'No',
+      formData.disabilityType || 'N/A',
+      formData.hasJobbermanCertificate ? 'Yes' : 'No',
+      formData.referralSource || 'N/A',
+      courseDetails.name,
+      formData.pathway,
+      formData.businessStatus !== "no_business" && formData.businessStatus !== "" ? 'Yes' : 'No',
+      formData.businessStatus || 'N/A',
+      formData.businessSector || 'N/A',
+      formData.companyName || 'N/A',
+      formData.takenBoosterCourse ? 'Yes' : 'No',
+      formData.workInterest ? 'Yes' : 'No',
+      formData.hasFormalTraining || 'N/A',
+      formData.familiarityScale || 'N/A',
+      formData.hasUsedTools || 'N/A',
+      formData.toolsUsed || 'N/A',
+      formData.courseSpecificAnswer || 'N/A',
+      Array.isArray(formData.socialMediaPlatforms) ? formData.socialMediaPlatforms.join(', ') : 'N/A',
+      Array.isArray(formData.digitalStrategies) ? formData.digitalStrategies.join(', ') : 'N/A',
+      formData.expectations || 'N/A',
+      formData.applicationEaseRating || 'N/A',
+    ]
+
+    // Append the data to the sheet
+    const { appendToSheet } = await import('@/lib/sheets-utils')
+    await appendToSheet(spreadsheetId, 'Sheet1!A:AE', [rowData])
+
+    console.log('✅ Data uploaded to Google Sheets successfully')
+  } catch (error) {
+    console.error('Error uploading to Google Sheets:', error)
+    // Don't throw the error to avoid breaking the form submission
+  }
+}
+
+//==============Drive set up=================================
 
 const DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID
 const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL
@@ -355,6 +416,16 @@ export async function POST(request: Request) {
     clearTimeout(timeoutId)
 
 
+
+    //============ Upload to Google Sheets (non-blocking)
+    
+try {
+  console.log("📊 Uploading data to Google Sheets...")
+  await uploadToGoogleSheets(formData, applicantData.id, applicationData.id, courseDetails)
+} catch (sheetsError) {
+  console.error("⚠️ Google Sheets upload failed, but continuing:", sheetsError)
+  // Continue even if sheets upload fails
+}
 
     // ================= Google Drive Upload =====================
 try {
