@@ -57,12 +57,12 @@ export function generateCourseConfirmationEmail({
           text-align: center;
           margin-bottom: 30px;
           padding-bottom: 20px;
-          border-bottom: 3px solid #e91e63;
+          border-bottom: 3px solid #0087DB;
         }
         .logo {
           font-size: 24px;
           font-weight: bold;
-          color: #e91e63;
+          color: #0087DB;
           margin-bottom: 10px;
         }
         .title {
@@ -76,7 +76,7 @@ export function generateCourseConfirmationEmail({
         }
         .course-info {
           background-color: #f8f9fa;
-          border-left: 4px solid #e91e63;
+          border-left: 4px solid #0087DB;
           padding: 20px;
           margin: 20px 0;
           border-radius: 5px;
@@ -104,8 +104,8 @@ export function generateCourseConfirmationEmail({
         }
         .cta-button {
           display: inline-block;
-          background-color: #e91e63;
-          color: white;
+          background-color: #0087DB;
+          color: #2c3e50;
           padding: 15px 30px;
           text-decoration: none;
           border-radius: 5px;

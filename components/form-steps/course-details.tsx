@@ -179,15 +179,18 @@ export default function CourseDetails({ selectedCourse, courseId }: CourseDetail
               </Button>
 
               {courseInfo.class_link && (
+                <a href={courseInfo.class_link} target="_blank">
                 <Button
                   variant="outline"
-                  onClick={() => window.open(courseInfo.class_link, "_blank")}
+                  //onClick={() => window.open(courseInfo.class_link, "_blank")}
                   className="border-[#0087DB] text-[#0087DB] hover:bg-blue-50"
                 >
                   <ExternalLink className="mr-2 h-4 w-4" />
                   Join Class
                 </Button>
+                </a>
               )}
+              
             </div>
           </CardContent>
         </Card>
