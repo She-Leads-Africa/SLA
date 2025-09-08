@@ -28,7 +28,13 @@ interface CourseInfo {
 export default function CourseDetails({ selectedCourse, courseId }: CourseDetailsProps) {
   const [courseInfo, setCourseInfo] = useState<CourseInfo | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isInIframe, setIsInIframe] = useState(false)
 
+  useEffect(() => {
+    // Check if the page is inside an iframe
+    setIsInIframe(window.self !== window.top)
+  }, [])
+  
   useEffect(() => {
     const fetchCourseDetails = async () => {
       if (!courseId) {
@@ -58,6 +64,13 @@ export default function CourseDetails({ selectedCourse, courseId }: CourseDetail
     if (!courseId) return
 
     try {
+      // If in iframe, open in new tab
+      if (isInIframe) {
+        window.open(`/api/generate-course-pdf?courseId=${courseId}`, '_blank')
+        return
+      }
+      
+      // Regular download for non-iframe scenarios
       const response = await fetch(`/api/generate-course-pdf?courseId=${courseId}`)
       if (response.ok) {
         const blob = await response.blob()
@@ -72,6 +85,9 @@ export default function CourseDetails({ selectedCourse, courseId }: CourseDetail
       }
     } catch (error) {
       console.error("Error downloading PDF:", error)
+      
+      // Fallback: try opening in new tab if fetch fails
+      window.open(`/api/generate-course-pdf?courseId=${courseId}`, '_blank')
     }
   }
 
@@ -205,6 +221,23 @@ export default function CourseDetails({ selectedCourse, courseId }: CourseDetail
                 </a>
              </div>
 
+            {/* Add direct link for iframe scenarios */}
+            {isInIframe && (
+              <div className="mt-4 p-3 bg-yellow-50 rounded-md text-sm">
+                <p className="text-yellow-800">
+                  If the download doesn't start automatically,{" "}
+                  <a 
+                    href={`/api/generate-course-pdf?courseId=${courseId}`} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#0087DB] underline font-medium"
+                  >
+                    click here to open the PDF in a new tab
+                  </a>
+                  , then use the download button in the PDF viewer.
+                </p>
+              </div>
+            )}
             
           </CardContent>
         </Card>
