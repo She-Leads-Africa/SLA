@@ -189,9 +189,23 @@ export default function CourseDetails({ selectedCourse, courseId }: CourseDetail
                   Join Class
                 </Button>
                 </a>
-              )}
-              
+              )}   
             </div>
+
+             <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
+              <a href="https://t.me/+3tGfoFJmO44wOTQ8" target="_blank">
+                <Button
+                  variant="outline"
+                  //onClick={() => window.open(courseInfo.class_link, "_blank")}
+                  className="border-[#0087DB] text-[#0087DB] hover:bg-blue-50"
+                >
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Join BoostHer Community
+                </Button>
+                </a>
+             </div>
+
+            
           </CardContent>
         </Card>
       )}
