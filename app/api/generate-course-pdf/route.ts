@@ -370,6 +370,8 @@ export async function POST(request: Request) {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="${course.name.replace(/[^a-z0-9]/gi, "_").toLowerCase()}_course_details.pdf"`,
         "Cache-Control": "no-cache",
+        "X-Frame-Options": "ALLOWALL", // Or specify specific domains
+        "Access-Control-Allow-Origin": "*", // Or restrict to your WordPress domain
       },
     })
   } catch (error) {

@@ -207,6 +207,10 @@ export function generateCourseConfirmationEmail({
           <a href="${classLink}" class="cta-button">Join Class Link</a>
         </div>
 
+        <div style="text-align: center;">
+          <a href="https://t.me/+3tGfoFJmO44wOTQ8" class="cta-button">Join BoostHer Community</a>
+        </div>
+
         <div class="contact-info">
           <p><strong>📞 Need Help?</strong></p>
           <p>If you have any questions or need assistance, please don't hesitate to reach out to our support team. We're here to help you succeed!</p>
