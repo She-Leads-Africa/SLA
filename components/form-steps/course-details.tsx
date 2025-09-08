@@ -189,10 +189,10 @@ export default function CourseDetails({ selectedCourse, courseId }: CourseDetail
             )}
 
             <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
-              <Button onClick={handleDownloadPDF} className="bg-[#0087DB] hover:bg-[#0076C7]">
+              {/* <Button onClick={handleDownloadPDF} className="bg-[#0087DB] hover:bg-[#0076C7]">
                 <Download className="mr-2 h-4 w-4" />
                 Download Course Details
-              </Button>
+              </Button> */}
 
               {courseInfo.class_link && (
                 <a href={courseInfo.class_link} target="_blank">
@@ -208,20 +208,9 @@ export default function CourseDetails({ selectedCourse, courseId }: CourseDetail
               )}   
             </div>
 
-             <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
-              <a href="https://t.me/+3tGfoFJmO44wOTQ8" target="_blank">
-                <Button
-                  variant="outline"
-                  //onClick={() => window.open(courseInfo.class_link, "_blank")}
-                  className="border-[#0087DB] text-[#0087DB] hover:bg-blue-50"
-                >
-                  <ExternalLink className="mr-2 h-4 w-4" />
-                  Join BoostHer Community
-                </Button>
-                </a>
-             </div>
+             
 
-            {/* Add direct link for iframe scenarios */}
+            {/* Add direct link for iframe scenarios
             {isInIframe && (
               <div className="mt-4 p-3 bg-yellow-50 rounded-md text-sm">
                 <p className="text-yellow-800">
@@ -237,7 +226,7 @@ export default function CourseDetails({ selectedCourse, courseId }: CourseDetail
                   , then use the download button in the PDF viewer.
                 </p>
               </div>
-            )}
+            )} */}
             
           </CardContent>
         </Card>
