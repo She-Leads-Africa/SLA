@@ -15,6 +15,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -69,6 +80,7 @@ export default function CoursesPage() {
   const [courseQuestions, setCourseQuestions] = useState<CourseQuestion[]>([])
   const [selectedCourseForQuestions, setSelectedCourseForQuestions] = useState<Course | null>(null)
   const [saving, setSaving] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     fetchCourses()
@@ -257,6 +269,40 @@ export default function CoursesPage() {
       setSaving(false)
     }
   }
+
+  const handleDeleteCourse = async (courseId: number, courseName: string) => {
+  setDeleting(true)
+  try {
+    console.log("🗑️ Deleting course:", courseName)
+
+    const response = await fetch(`/api/courses/${courseId}`, {
+      method: "DELETE",
+    })
+
+    const data = await response.json()
+
+    if (!data.success) {
+      throw new Error(data.error || "Failed to delete course")
+    }
+
+    console.log("✅ Course deleted successfully")
+    toast({
+      title: "Course Deleted",
+      description: `${courseName} has been deleted successfully`,
+    })
+
+    fetchCourses()
+  } catch (error: any) {
+    console.error("💥 Error deleting course:", error)
+    toast({
+      title: "Error",
+      description: error.message || "Failed to delete course. Please try again.",
+      variant: "destructive",
+    })
+  } finally {
+    setDeleting(false)
+  }
+}
 
   const createDefaultQuestions = async (courseId: number) => {
     const defaultQuestions = [
@@ -765,6 +811,33 @@ export default function CoursesPage() {
                           <Edit className="h-4 w-4 mr-1" />
                           Edit
                         </Button>
+                         <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
+                              <Trash2 className="h-4 w-4 mr-1" />
+                              Delete
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Course</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{course.name}"? This will also delete all associated
+                                course questions. This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDeleteCourse(course.id, course.name)}
+                                disabled={deleting}
+                                className="bg-red-600 hover:bg-red-700"
+                              >
+                                {deleting ? "Deleting..." : "Delete Course"}
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </TableCell>
                   </TableRow>

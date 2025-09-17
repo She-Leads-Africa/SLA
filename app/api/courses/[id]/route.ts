@@ -1,6 +1,63 @@
 import { NextResponse } from "next/server"
 import { serverSupabase } from "@/lib/supabase"
 
+
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+  try {
+    const id = params.id
+    console.log("🗑️ Attempting to delete course:", id)
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: "Course ID is required" },
+        { status: 400 }
+      )
+    }
+
+    // First delete related questions
+    const { error: questionsError } = await serverSupabase
+      .from("course_questions")
+      .delete()
+      .eq("course_id", id)
+
+    if (questionsError) {
+      console.error("❌ Error deleting course questions:", questionsError)
+      return NextResponse.json(
+        { success: false, error: "Failed to delete course questions" },
+        { status: 500 }
+      )
+    }
+
+    // Then delete the course
+    const { error: courseError } = await serverSupabase
+      .from("courses")
+      .delete()
+      .eq("id", id)
+
+    if (courseError) {
+      console.error("❌ Error deleting course:", courseError)
+      return NextResponse.json(
+        { success: false, error: "Failed to delete course" },
+        { status: 500 }
+      )
+    }
+
+    console.log("✅ Course and related questions deleted successfully")
+    return NextResponse.json({
+      success: true,
+      message: "Course and related questions deleted successfully",
+    })
+  } catch (error: any) {
+    console.error("💥 Error in course deletion:", error)
+    return NextResponse.json(
+      { success: false, error: error.message || "An unexpected error occurred" },
+      { status: 500 }
+    )
+  }
+}
+
+
+
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
     const id = params.id
