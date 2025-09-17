@@ -68,17 +68,22 @@ export default function PersonalInfo({ formData, updateFormData, onNext, onBack,
   const [showDuplicateDialog, setShowDuplicateDialog] = useState(false)
   const [duplicateInfo, setDuplicateInfo] = useState<any>(null)
   const [isCheckingEmail, setIsCheckingEmail] = useState(false)
+  const [emailError, setEmailError] = useState("")
+
+  // ✅ Email regex validation
+  const validateEmail = (email: string) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    return regex.test(email)
+  }
 
   const checkEmailDuplicate = async (email: string) => {
-    if (!email || !email.includes("@")) return false
+    if (!email || !validateEmail(email)) return false
 
     setIsCheckingEmail(true)
     try {
       const response = await fetch("/api/check-email", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       })
 
@@ -99,13 +104,28 @@ export default function PersonalInfo({ formData, updateFormData, onNext, onBack,
     }
   }
 
-  const handleEmailBlur = async () => {
-    if (formData.email) {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    updateFormData("email", value)
+
+    if (value && !validateEmail(value)) {
+      setEmailError("Please enter a valid email address (e.g. name@example.com)")
+    } else {
+      setEmailError("")
+    }
+  }
+
+   const handleEmailBlur = async () => {
+    if (formData.email && validateEmail(formData.email)) {
       await checkEmailDuplicate(formData.email)
     }
   }
 
   const handleNext = async () => {
+    if (!validateEmail(formData.email || "")) {
+      setEmailError("Please enter a valid email address before continuing")
+      return
+    }
     // Validate required fields
     if (
       !formData.fullName ||
@@ -138,6 +158,7 @@ export default function PersonalInfo({ formData, updateFormData, onNext, onBack,
     })
   }
 
+
   const isFormValid =
     formData.fullName &&
     formData.email &&
@@ -147,7 +168,8 @@ export default function PersonalInfo({ formData, updateFormData, onNext, onBack,
     formData.locationType &&
     formData.academicQualification &&
     formData.employmentStatus &&
-    formData.idDocument
+    formData.idDocument &&
+    validateEmail(formData.email)
 
     const readFileAsBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -190,14 +212,18 @@ export default function PersonalInfo({ formData, updateFormData, onNext, onBack,
               id="email"
               type="email"
               value={formData.email || ""}
-              onChange={(e) => updateFormData("email", e.target.value)}
+              onChange={handleEmailChange}
               onBlur={handleEmailBlur}
               placeholder="Enter your email address"
               className="mt-1"
               required
               disabled={isCheckingEmail}
+              inputMode="email"
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+              title="Please enter a valid email address (e.g. name@example.com)"
             />
             {isCheckingEmail && <p className="text-xs text-gray-500 mt-1">Checking email...</p>}
+            {emailError && <p className="text-xs text-red-500 mt-1">{emailError}</p>}
           </div>
 
           <div>
@@ -206,7 +232,7 @@ export default function PersonalInfo({ formData, updateFormData, onNext, onBack,
             </Label>
             <Input
               id="phoneNumber"
-              type="tel"
+              type="number"
               value={formData.phoneNumber || ""}
               onChange={(e) => updateFormData("phoneNumber", e.target.value)}
               placeholder="Enter your phone number"
@@ -460,7 +486,7 @@ export default function PersonalInfo({ formData, updateFormData, onNext, onBack,
         </DialogContent>
       </Dialog>
 
-      <div className="flex justify-between">
+       <div className="flex justify-between">
         <Button onClick={onBack} variant="outline">
           Back
         </Button>

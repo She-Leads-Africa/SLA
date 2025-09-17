@@ -44,6 +44,7 @@ export default function DisplacementCheck({ value, onChange, onNext, onBack }: D
             </Label>
           </div>
         </RadioGroup>
+        
       </div>
 
       <div className="flex justify-between">

@@ -63,6 +63,7 @@ export default function ApplicationForm() {
     hasDisability: null,
     disabilityType: "",
     referralSource: "",
+    ambassadorCode: "",
 
     // Course selection
     preferredCourse: "",
@@ -298,7 +299,15 @@ export default function ApplicationForm() {
         return (
           <ReferralSource
             value={formData.referralSource}
-            onChange={(value) => updateFormData("referralSource", value)}
+           onChange={(value) => {
+              updateFormData("referralSource", value)
+              // Clear ambassador code if not selecting SLA Ambassador
+              if (value !== "sla_ambassador") {
+                updateFormData("ambassadorCode", "")
+              }
+            }}
+            ambassadorValue={formData.ambassadorCode}
+            onAmbassadorChange={(value) => updateFormData("ambassadorCode", value)}
             onNext={handleNext}
             onBack={handleBack}
           />

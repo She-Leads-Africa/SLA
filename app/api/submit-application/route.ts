@@ -36,6 +36,8 @@ async function uploadToGoogleSheets(formData: any, applicantId: string, applicat
       formData.disabilityType || 'N/A',
       formData.hasJobbermanCertificate ? 'Yes' : 'No',
       formData.referralSource || 'N/A',
+      formData.ambassadorCode,
+      
       courseDetails.name,
       formData.pathway,
       formData.businessStatus !== "no_business" && formData.businessStatus !== "" ? 'Yes' : 'No',
@@ -316,9 +318,20 @@ export async function POST(request: Request) {
         "sla_linkedin",
         "friend_referral",
         "google_search",
+        "sla_ambassador",
         "others",
       ]
       return validSources.includes(source) ? source : "others"
+    }
+
+    // Prepare referral source data
+    const finalReferralSource = sanitizeReferralSource(formData.referralSource || "other")
+    let ambassadorCode = null
+
+    // If SLA Ambassador is selected, include the ambassador code
+    if (formData.referralSource === "sla_ambassador" && formData.ambassadorCode) {
+      ambassadorCode = formData.ambassadorCode
+      console.log("👥 SLA Ambassador referral:", ambassadorCode)
     }
 
     const sanitizeBusinessAge = (age: string) => {
@@ -342,7 +355,8 @@ export async function POST(request: Request) {
       has_disability: formData.hasDisability === true,
       disability_type: formData.hasDisability === true ? formData.disabilityType || "Not specified" : null,
       has_jobberman_certificate: formData.hasJobbermanCertificate === true,
-      referral_source: sanitizeReferralSource(formData.referralSource || "others"),
+      referral_source: finalReferralSource,
+      // ambassador_code: ambassadorCode,
     }
 
     console.log("📊 Applicant data to insert:", applicantInsertData)

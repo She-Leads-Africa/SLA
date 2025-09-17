@@ -25,31 +25,36 @@ export default function DisabilityCheck({ formData, updateFormData, onNext, onBa
     <div className="space-y-6">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-[#0087DB]">Disability Information</h2>
-        <p className="text-gray-600 mt-2">Any form of disability? If yes, what is your disability type?</p>
+        <p className="text-gray-600 mt-2">This helps us understand your disability type if any, and how we can help.</p>
       </div>
+      
+      <div className="bg-blue-50 p-6 rounded-lg">
+        <h3 className="text-lg font-medium mb-4">Do you have any form of disability?</h3>
+        <div className="mb-4 p-4 bg-white rounded border-l-4 border-[#0087DB]">
+          <p className="text-sm text-gray-700">
+            e.g., Any type of eye defect, OCD, ADHD, Dyslexia, Anxiety, Colour blindness and any other.
+          </p>
+        </div>
 
-      <div className="bg-blue-50 p-6 rounded-lg space-y-6">
-        <div>
-          <Label className="text-sm font-medium">Do you have any form of disability? *</Label>
           <RadioGroup
             value={formData.hasDisability === null ? "" : formData.hasDisability ? "yes" : "no"}
             onValueChange={(value) => updateFormData("hasDisability", value === "yes")}
             className="mt-2"
           >
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 mb-2">
               <RadioGroupItem value="no" id="no_disability" />
               <Label htmlFor="no_disability" className="cursor-pointer">
                 No
               </Label>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 mb-2">
               <RadioGroupItem value="yes" id="has_disability" />
               <Label htmlFor="has_disability" className="cursor-pointer">
                 Yes
               </Label>
             </div>
           </RadioGroup>
-        </div>
+      
 
         {formData.hasDisability && (
           <div>
@@ -69,8 +74,8 @@ export default function DisabilityCheck({ formData, updateFormData, onNext, onBa
             </p>
           </div>
         )}
-      </div>
-
+    
+</div>
       <div className="flex justify-between">
         <Button onClick={onBack} variant="outline">
           Back
