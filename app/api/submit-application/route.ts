@@ -36,6 +36,7 @@ async function uploadToGoogleSheets(formData: any, applicantId: string, applicat
       formData.disabilityType || 'N/A',
       formData.hasJobbermanCertificate ? 'Yes' : 'No',
       formData.referralSource || 'N/A',
+      formData.ambassadorCode,
       courseDetails.name,
       formData.pathway,
       formData.businessStatus !== "no_business" && formData.businessStatus !== "" ? 'Yes' : 'No',
