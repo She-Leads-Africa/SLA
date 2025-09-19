@@ -199,7 +199,7 @@ export default function ApplicationsPage() {
             </SelectContent>
           </Select>
 
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" disabled={exporting}>
                 <FileSpreadsheet className="mr-2 h-4 w-4" />
@@ -216,7 +216,7 @@ export default function ApplicationsPage() {
                 Export Filtered Applications
               </DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
         </div>
       </div>
 

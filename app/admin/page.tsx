@@ -362,15 +362,15 @@ export default function AdminDashboard() {
                   Manage Courses
                 </Button>
               </Link>
-              <Button variant="outline" className="w-full bg-transparent">
+              {/* <Button variant="outline" className="w-full bg-transparent">
                 <TrendingUp className="h-4 w-4 mr-2" />
                 Course Analytics
-              </Button>
+              </Button> */}
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle className="text-[#0087DB]">Reports</CardTitle>
             <CardDescription>Export and analyze data</CardDescription>
@@ -387,7 +387,7 @@ export default function AdminDashboard() {
               </Button>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </div>
   )
