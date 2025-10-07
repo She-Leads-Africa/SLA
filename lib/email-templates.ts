@@ -208,7 +208,7 @@ export function generateCourseConfirmationEmail({
         </div>
 
         <div style="text-align: center;">
-          <a href="https://t.me/+3tGfoFJmO44wOTQ8" class="cta-button">Join BoostHer Community</a>
+          <a href="https://t.me/+lw3D7e2krkA4NDJk" class="cta-button">Join BoostHer Community</a>
         </div>
 
         <div class="contact-info">
