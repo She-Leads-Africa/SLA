@@ -147,7 +147,7 @@ export default function AdminDashboard() {
             <Users className="h-4 w-4 text-[#0087DB]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[#0087DB]">{totalApplications}</div>
+            <div className="text-2xl font-bold text-[#0087DB]">{totalApplications<1000?totalApplications:"1000+"}</div>
             <p className="text-xs text-gray-600">All time applications</p>
           </CardContent>
         </Card>
