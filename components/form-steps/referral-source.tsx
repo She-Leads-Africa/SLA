@@ -28,6 +28,7 @@ export default function ReferralSource({
     { value: "sla_email", label: "SLA's email" },
     { value: "sla_tiktok", label: "SLA's TikTok" },
     { value: "sla_x", label: "SLA's X (Formerly Twitter)" },
+    { value: "dixcoverhub", label: "DixcoverHub" },
     { value: "linkedin", label: "LinkedIn" },
     { value: "sla_ambassador", label: "SLA Ambassador" },
     { value: "others", label: "Others" },
